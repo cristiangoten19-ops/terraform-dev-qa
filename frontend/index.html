@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Frontend</title>
+</head>
+<body>
+  <h1>Ambiente: <span id="env">...</span></h1>
+  <p id="msg">Consultando backend...</p>
+  <script>
+    const apiPort = Number(location.port) + 1;
+    fetch(`http://localhost:${apiPort}/api/info`)
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("env").textContent = d.env;
+        document.getElementById("msg").textContent =
+          `Backend OK. Hora en PostgreSQL: ${d.dbTime}`;
+      })
+      .catch(e => {
+        document.getElementById("msg").textContent = "Error: " + e;
+      });
+  </script>
+</body>
+</html>
