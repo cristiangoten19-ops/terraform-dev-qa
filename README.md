@@ -2,7 +2,7 @@
 
 Infraestructura como código con Terraform y Docker que levanta dos ambientes (DEV y QA). Cada uno tiene una arquitectura de 3 capas: Frontend (nginx + `index.html`), Backend (Node.js + `index.js`) y Base de datos (PostgreSQL).
 
-Autor: <tu-nombre>
+Autor: Cristian
 
 ## Arquitectura
 
@@ -15,7 +15,6 @@ Autor: <tu-nombre>
 | QA | Backend (Node) | api-qa | 5002:3000 |
 | QA | PostgreSQL | bd-qa | 5003:5432 |
 
-Flujo en cada ambiente: Frontend → Backend → Base de datos. Cada ambiente usa su propia red Docker (`net-dev` y `net-qa`), por lo que el backend de DEV solo se conecta a la base de datos de DEV, y lo mismo en QA.
 
 ## Requisitos
 
@@ -50,10 +49,7 @@ terraform plan
 terraform apply
 ```
 
-Escribir `yes` cuando Terraform lo solicite. La primera vez tarda unos minutos porque construye las imágenes y descarga PostgreSQL.
 
-> Por defecto el proyecto está configurado para Docker Desktop en Windows (`npipe:////./pipe/docker_engine`). En Linux o macOS, usar:
-> `terraform apply -var="docker_host=unix:///var/run/docker.sock"`
 
 ### 3. Verificar
 
@@ -68,7 +64,7 @@ Abrir en el navegador:
 - DEV: http://localhost:4001
 - QA: http://localhost:5001
 
-Cada página muestra el ambiente y la hora de PostgreSQL, lo que confirma la conexión Frontend → Backend → BD.
+
 
 API de cada ambiente:
 
@@ -81,7 +77,6 @@ API de cada ambiente:
 terraform destroy
 ```
 
-Escribir `yes` para confirmar.
 
 ## Estructura del proyecto
 
@@ -90,8 +85,6 @@ Escribir `yes` para confirmar.
 ├── backend/      index.js + package.json + Dockerfile (node)
 └── terraform/    configuración principal y módulo reutilizable "environment"
 ```
-
-El módulo `terraform/modules/environment` se instancia dos veces (`dev` y `qa`) con distintos nombres y puertos, evitando duplicar código.
 
 ## Convención de commits
 
